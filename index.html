@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Prompt Injection Demo</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0d1117;
+            color: white;
+            text-align: center;
+        }
+        h1 { color: #58a6ff; }
+
+        #chatbox {
+            width: 60%;
+            margin: auto;
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            padding: 10px;
+        }
+
+        .msg {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 8px;
+        }
+
+        .user { background: #238636; text-align: right; }
+        .bot { background: #30363d; text-align: left; }
+
+        input {
+            width: 60%;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        select {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🤖 AI Prompt Injection Demo</h1>
+
+<select id="mode">
+    <option value="vulnerable">Vulnerable AI 😈</option>
+    <option value="secure">Secure AI 🛡️</option>
+</select>
+
+<div id="chatbox"></div>
+
+<br>
+
+<input type="text" id="input" placeholder="Type your message...">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+const SECRET = "12345-SECRET";
+
+function vulnerableAI(input) {
+    input = input.toLowerCase();
+
+    if (input.includes("ignore") || 
+        input.includes("reveal") || 
+        input.includes("secret") || 
+        input.includes("bypass") || 
+        input.includes("admin")) {
+
+        return "⚠️ Oops! Secret is: " + SECRET;
+    }
+
+    return "✅ I will follow instructions safely.";
+}
+
+function secureAI(input) {
+    input = input.toLowerCase();
+
+    if (input.includes("ignore") || 
+        input.includes("reveal") || 
+        input.includes("secret") || 
+        input.includes("bypass") || 
+        input.includes("admin")) {
+
+        return "🚫 Request blocked due to security policy.";
+    }
+
+    return "✅ Safe response generated.";
+}
+
+function sendMessage() {
+    let input = document.getElementById("input").value;
+    let mode = document.getElementById("mode").value;
+    let chatbox = document.getElementById("chatbox");
+
+    if (input.trim() === "") return;
+
+    chatbox.innerHTML += `<div class="msg user">${input}</div>`;
+
+    let response;
+
+    if (mode === "secure") {
+        response = secureAI(input);
+    } else {
+        response = vulnerableAI(input);
+    }
+
+    setTimeout(() => {
+        chatbox.innerHTML += `<div class="msg bot">${response}</div>`;
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }, 500);
+
+    document.getElementById("input").value = "";
+}
+</script>
+
+</body>
+</html>
